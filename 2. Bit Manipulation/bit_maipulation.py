@@ -1,6 +1,3 @@
-from typing import Any
-
-
 x = 5
 y = 7
 z = 10
@@ -83,7 +80,7 @@ y = x ^ y
 x = x ^ y
 print(f'{x = }, {y = }')
 
-def binary(n: int) -> Any:
+def binary(n: int) -> str:
     if n == 0:
         return "0"
     result = []
