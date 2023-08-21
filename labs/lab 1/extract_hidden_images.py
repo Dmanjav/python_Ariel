@@ -9,15 +9,15 @@
 #----------------------------------------------------------
 import sys
 from PIL import Image
-
+""" 
 try:
     INPUT_FILE_NAME = sys.argv[1]
     if INPUT_FILE_NAME.mode != "RGB":
         raise ValueError("Image provided is not in RGB")
 except ValueError:
-    print("Image provided is not in RGB")
+    print("Image provided is not in RGB") """
 
-#INPUT_FILE_NAME = sys.argv[1]
+INPUT_FILE_NAME = sys.argv[1]
 OUTPUT_RED = "scarlett_channel_1_red.png"
 OUTPUT_GREEN = "scarlett_channel_2_green.png"
 OUTPUT_BLUE = "scarlett_channel_3_blue.png"
@@ -27,7 +27,6 @@ def process_image() -> None:
     green_channel()
     blue_channel()
 
-    
 def red_channel() -> None:
     with Image.open(INPUT_FILE_NAME) as input_file:
         pixin = input_file.load()
