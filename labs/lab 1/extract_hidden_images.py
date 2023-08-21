@@ -10,7 +10,14 @@
 import sys
 from PIL import Image
 
-INPUT_FILE_NAME = sys.argv[1]
+try:
+    INPUT_FILE_NAME = sys.argv[1]
+    if INPUT_FILE_NAME.mode != "RGB":
+        raise ValueError("Image provided is not in RGB")
+except ValueError:
+    print("Image provided is not in RGB")
+
+#INPUT_FILE_NAME = sys.argv[1]
 OUTPUT_RED = "scarlett_channel_1_red.png"
 OUTPUT_GREEN = "scarlett_channel_2_green.png"
 OUTPUT_BLUE = "scarlett_channel_3_blue.png"
