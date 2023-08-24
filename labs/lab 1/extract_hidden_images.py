@@ -7,27 +7,38 @@
 #           A01747433 Carlos Alberto Sánchez Calderón
 #           A01753486 Diego Manjarrez Viveros
 #----------------------------------------------------------
+
 import sys
 from PIL import Image
-""" 
-try:
-    INPUT_FILE_NAME = sys.argv[1]
-    if INPUT_FILE_NAME.mode != "RGB":
-        raise ValueError("Image provided is not in RGB")
-except ValueError:
-    print("Image provided is not in RGB") """
 
-INPUT_FILE_NAME = sys.argv[1]
 OUTPUT_RED = "scarlett_channel_1_red.png"
 OUTPUT_GREEN = "scarlett_channel_2_green.png"
 OUTPUT_BLUE = "scarlett_channel_3_blue.png"
 
 def process_image() -> None:
-    red_channel()
-    green_channel()
-    blue_channel()
+    try :
+        INPUT_FILE_NAME = sys.argv[1]
+        verf = Image.open(INPUT_FILE_NAME)
+        if verf.mode != "RGB":
+            print("Image provided is not in RGB")
+            sys.exit()
+        if INPUT_FILE_NAME.split(".")[-1] != "png":
+            print("Image provided is not a png file")
+            sys.exit()
+            
+        red_channel(INPUT_FILE_NAME)
+        green_channel(INPUT_FILE_NAME)
+        blue_channel(INPUT_FILE_NAME)
+        
+    except IndexError:
+        print("Please provide an image file name as an argument")
+        sys.exit()
+    except FileNotFoundError:
+        print("Image file not found")
+        sys.exit()
 
-def red_channel() -> None:
+
+def red_channel(INPUT_FILE_NAME) -> None:
     with Image.open(INPUT_FILE_NAME) as input_file:
         pixin = input_file.load()
         width, height = input_file.size
@@ -45,7 +56,7 @@ def red_channel() -> None:
 
     output_image.save(OUTPUT_RED)
 
-def green_channel() -> None:
+def green_channel(INPUT_FILE_NAME) -> None:
     with Image.open(INPUT_FILE_NAME) as input_file:
         pixin = input_file.load()
         width, height = input_file.size
@@ -63,7 +74,7 @@ def green_channel() -> None:
 
     output_image.save(OUTPUT_GREEN)
     
-def blue_channel() -> None:
+def blue_channel(INPUT_FILE_NAME) -> None:
     with Image.open(INPUT_FILE_NAME) as input_file:
         pixin = input_file.load()
         width, height = input_file.size
