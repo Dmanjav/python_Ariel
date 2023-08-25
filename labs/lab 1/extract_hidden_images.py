@@ -11,9 +11,11 @@
 import sys
 from PIL import Image
 
-OUTPUT_RED = "scarlett_channel_1_red.png"
-OUTPUT_GREEN = "scarlett_channel_2_green.png"
-OUTPUT_BLUE = "scarlett_channel_3_blue.png"
+NAME = sys.argv[1].split(".")[0]
+
+OUTPUT_RED = NAME + "_channel_1_red.png"
+OUTPUT_GREEN = NAME + "_channel_2_green.png"
+OUTPUT_BLUE = NAME + "_channel_3_blue.png"
 
 def process_image() -> None:
     try :
