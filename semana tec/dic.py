@@ -1,3 +1,11 @@
+#
+#Equipo: 
+#Andrés Iván Rodríguez Méndez
+#Diego Manjarrez Viveros
+#Omar Polanco Bueno
+
+import matplotlib.pyplot as plt
+
 # def diccionarios():
 #     telefonos = {'Luis': '555-333', 'Pedro': '444-222', 'Alexa': '123-456'}
 #     print(telefonos)
@@ -29,12 +37,14 @@ def leerTexto():
         contendio = contendio.replace("\n", " ")
         saltos = contendio.split(" ")
         for palabra in saltos:
-            if palabra not in palabras:
+            if palabra not in palabras and palabra != "":
                 palabras[palabra] = 1
-            else:
+            elif palabra != "":
                 palabras[palabra] += 1
-        
-    del palabras[""]
+    
+    plt.bar(range(len(palabras)), list(palabras.values()), align='center')
+    plt.xticks(range(len(palabras)), list(palabras.keys()), rotation=90)
+    plt.show()
     print(palabras)
     print(len(palabras))
                     
