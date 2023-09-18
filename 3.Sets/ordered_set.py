@@ -51,49 +51,94 @@ class OrderedSet(Generic[T]):
     def __iter__(self) -> Iterator[T]:
         return OrderedSet.__Iterator(self.__data)
 
+    def discard(self, value: T) -> None:
+        for (index, elem) in enumerate(self):
+            if elem == value:
+                del self.__data[index]
+                return
+
+    def remove(self, value: T) -> None:
+        for (index, elem) in enumerate(self):
+            if elem == value:
+                del self.__data[index]
+                return
+        raise KeyError
+
     def __eq__(self, other: object) -> bool:
         if isinstance(other, OrderedSet) and len(self) == len(other):
             for elem in self:
                 if elem not in other:
                     return False
             return True
+
         else:
             return False
-    
-    def discard(self, value: T) -> None:
-        for (index, elem) in enumerate(self):
-            if elem == value:
-                del self.__data[index]
-                return
-            
+
     def __le__(self, other: OrderedSet[T]) -> bool:
+
         for elem in self:
             if elem not in other:
                 return False
         return True
-        
+
     def __lt__(self, other: OrderedSet[T]) -> bool:
-        if len(self) < len(other):
-            for elem in self:
-                if elem not in other:
-                    return False
-            return True
-        else:
+
+        if len(self) >= len(other):
             return False
-            
+        for elem in self:
+            if elem not in other:
+                return False
+        return True
+
+    def __ge__(self, other: OrderedSet[T]) -> bool:
+        return other <= self
+
+    def __gt__(self, other: OrderedSet[T]) -> bool:
+        return other < self
+
+    def isdisjoint(self, other: OrderedSet[T]) -> bool:
+        for elem in self:
+            if elem in other:
+                return False
+        return True
+
     def __and__(self, other: OrderedSet[T]) -> OrderedSet[T]:
         result: OrderedSet[T] = OrderedSet()
         for elem in self:
             if elem in other:
                 result.add(elem)
         return result
-            
+
     def __or__(self, other: OrderedSet[T]) -> OrderedSet[T]:
         result: OrderedSet[T] = OrderedSet(self)
         for elem in other:
             result.add(elem)
         return result
-    
+
+    def __sub__(self, other: OrderedSet[T]) -> OrderedSet[T]:
+        result: OrderedSet[T] = OrderedSet(self)
+        for elem in other:
+            result.discard(elem)
+        return result
+
+    def __xor__(self, other: OrderedSet[T]) -> OrderedSet[T]:
+        tempA: OrderedSet[T] = self - other
+        tempB: OrderedSet[T] = other - self
+        return tempA | tempB
+
+    def clear(self) -> None:
+        num: int = len(self)
+        for x in range(num):
+            del self.__data[0]
+
+    def pop(self) -> T:
+        if len(self) == 0:
+            raise KeyError
+        temp = self.__data[len(self) - 1]
+        self.discard(temp)
+        return temp
+
+
 if __name__ == '__main__':
     a: OrderedSet[int] = OrderedSet()
     a.add(5)
@@ -147,4 +192,4 @@ if __name__ == '__main__':
     d = OrderedSet(b)
     e = OrderedSet('hello')
     print(f'{d = }')
-    print(f'{e = }')    
+    print(f'{e = }')
