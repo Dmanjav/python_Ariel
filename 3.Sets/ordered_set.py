@@ -1,3 +1,12 @@
+#----------------------------------------------------------
+# Lab #1: Ordered Set Class
+#
+# Date: 20-Sep-2023
+# Authors:
+#           A01747433 Carlos Alberto Sánchez Calderón
+#           A01753486 Diego Manjarrez Viveros
+#----------------------------------------------------------
+
 from __future__ import annotations
 from typing import Generic, TypeVar
 from collections.abc import Iterator, Iterable
