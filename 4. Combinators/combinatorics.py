@@ -1,3 +1,13 @@
+#----------------------------------------------------------
+# Lab #3: Combinatorics
+# Permutations and combinations with repetitions.
+#
+# Date: 29-Sep-2022
+# Authors:
+#           A01747433 Carlos Alberto Sánchez Calderón
+#           A01753486 Diego Manjarrez Viveros
+#----------------------------------------------------------
+
 from comparable import C
 
 
