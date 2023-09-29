@@ -43,27 +43,36 @@ def permutations(s: list[C], k: int) -> list[list[C]]:
                 for t in combinations(s, k)],
                [])
 
+
+def perms(s: list[C], k: int) -> list[list[C]]:
+    if k == 0 or len(s) == 0:
+        return [[]]
+    else:
+        r = perms(s, k-1)
+
+        return r + [t + [j] for j in s for t in r]
+
+
 def permutations_with_repetition(s: list[C], k: int) -> list[list[C]]:
-    if k == 0:
-        return [[]]
-    else:
-        return [[x] + p for x in s for p in permutations_with_repetition(s, k - 1)]
-        
+    if len(s) == 0 or k == 0:
+        return []
+    res = []
+    for perm in perms(s, k):
+        if len(perm) == k:
+            res.append(perm)
+    return res
+
+
 def combinations_with_repetition(s: list[C], k: int) -> list[list[C]]:
-    if k == 0:
-        return [[]]
-    else:
-        return sum([[[x] + t for t in combinations_with_repetition(s[i:], k - 1)]
-                    for i, x in enumerate(s)],
-                   [])
+    if len(s) == 0 or k == 0:
+        return []
+    res = []
+    for perm in perms(s, k):
+        if len(perm) == k and sorted(perm) not in res:
+            res.append(sorted(perm))
+    return res
+
 
 if __name__ == '__main__':
     from pprint import pprint
-    # pprint(sorted_nicely(power_set([1, 2, 3, 4])))
-    # print()
-    # pprint(sorted_nicely(power_set(['a', 'b', 'c'])))
-    # pprint(sorted_nicely(combinations(['a', 'b', 'c', 'd'], 3)))
-    # pprint(insert_everywhere('a', ['b', 'c', 'd', 'e']))
-    #pprint(sorted_nicely(permutations(['a', 'b', 'c', 'd'], 3)))
-    #pprint(sorted_nicely(permutations_with_repetition([0, 1], 4)))
-    pprint(sorted_nicely(permutations_with_repetition(['a', 'b', 'c'], 2)))
+    # permutations_with_repetition([1, 2, 3, 4], 1)
