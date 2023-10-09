@@ -1,3 +1,13 @@
+#----------------------------------------------------------
+# Lab #5: Cryptarithmetic with CSP
+# General cryptarithmetic puzzle solver.
+#
+# Date: 13-Oct-2023
+# Authors:
+#           A01747433 Carlos Alberto Sánchez Calderón
+#           A01753486 Diego Manjarrez Viveros
+#----------------------------------------------------------
+
 from csp import Constraint, CSP
 from typing import Dict, List, Optional
 
