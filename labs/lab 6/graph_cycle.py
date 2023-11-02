@@ -32,30 +32,17 @@ test: Graph = {
     'E': ['C', 'D']
 }
 
-
-# def depth_first_search(
-#         start: str,
-#         graph: Graph) -> Iterator[str]:
-#     stack: deque[str] = deque()
-#     visited: set[str] = set()
-#     parent: dict[str, str] = {start: start}
-#     stack.append(start)
-#     while stack:
-#         current: str = stack.pop()
-#         if current not in visited:
-#             yield current
-#             visited.add(current)
-#             for neighbor in graph[current]:
-#                 if neighbor not in visited:
-#                     stack.append(neighbor)
-#                     parent[neighbor] = current
-#                     stack.append(neighbor)
-#                 elif neighbor != parent[current]:
-#                     cycle = [current, neighbor]
-#                     while current != neighbor:
-#                         current = parent[current]
-#                         cycle.insert(0, current)
-#                     return cycle
+test2: Graph = {
+    'A': ['D'],
+    'B': ['E'],
+    'C': ['E', 'I'],
+    'D': ['A', 'E', 'F'],
+    'E': ['B', 'C', 'D'],
+    'F': ['D', 'G'],
+    'G': ['F', 'H'],
+    'H': ['G', 'I'],
+    'I': ['C', 'H']
+}
 
 
 def depth_first_search(
@@ -66,11 +53,11 @@ def depth_first_search(
     visited: set[str] = set()
     cycle: list[str] = []
     stack.append(start)
-    
+
     while stack:
         current: str = stack.pop()
         if (current not in visited) and (current not in reps):
-            yield current   
+            yield current
             stack.extend(graph[current][::-1])
             visited.add(current)
             reps.append(current)
@@ -81,6 +68,7 @@ def depth_first_search(
             cycle.append(current)
             return cycle
 
+
 def has_cycle(initial: str, graph: Graph) -> Optional[list[str]]:
     ...
 
@@ -88,3 +76,4 @@ def has_cycle(initial: str, graph: Graph) -> Optional[list[str]]:
 if __name__ == '__main__':
     # print(f'{list(depth_first_search("A", g))}')
     print(f'{list(depth_first_search("A", test))}')
+    print(f'{list(depth_first_search("B", test2))}')
