@@ -8,6 +8,7 @@
 #           A01753486 Diego Manjarrez Viveros
 # ----------------------------------------------------------
 
+from calendar import c
 from typing import Iterator, Optional
 from collections import deque
 
@@ -32,29 +33,54 @@ test: Graph = {
 }
 
 
+# def depth_first_search(
+#         start: str,
+#         graph: Graph) -> Iterator[str]:
+#     stack: deque[str] = deque()
+#     visited: set[str] = set()
+#     parent: dict[str, str] = {start: start}
+#     stack.append(start)
+#     while stack:
+#         current: str = stack.pop()
+#         if current not in visited:
+#             yield current
+#             visited.add(current)
+#             for neighbor in graph[current]:
+#                 if neighbor not in visited:
+#                     stack.append(neighbor)
+#                     parent[neighbor] = current
+#                     stack.append(neighbor)
+#                 elif neighbor != parent[current]:
+#                     cycle = [current, neighbor]
+#                     while current != neighbor:
+#                         current = parent[current]
+#                         cycle.insert(0, current)
+#                     return cycle
+
+
 def depth_first_search(
         start: str,
         graph: Graph) -> Iterator[str]:
     stack: deque[str] = deque()
+    reps: list[str] = []
     visited: set[str] = set()
     cycle: list[str] = []
     stack.append(start)
+    
     while stack:
         current: str = stack.pop()
-        if (current not in cycle or cycle[0] == current):
-            yield current
+        if (current not in visited) and (current not in reps):
+            yield current   
             stack.extend(graph[current][::-1])
             visited.add(current)
-            
-            if len(cycle) == 4 and cycle[0] != cycle[-1]:
-                cycle.append(current)
+            reps.append(current)
+            cycle.append(current)
+            if len(cycle) == 4:
                 cycle = cycle[1:]
-                print(cycle)
-            elif len(cycle) == 4 and cycle[0] == cycle[-1]:
-                return cycle
-            else:
-                return "Hola"
-            
+        elif (current in visited) and (current in reps) and (len(cycle) == 3) and (current == cycle[0]):
+            cycle.append(current)
+            return cycle
+
 def has_cycle(initial: str, graph: Graph) -> Optional[list[str]]:
     ...
 
