@@ -8,72 +8,82 @@
 #           A01753486 Diego Manjarrez Viveros
 # ----------------------------------------------------------
 
-from calendar import c
-from typing import Iterator, Optional
-from collections import deque
+from typing import Optional
 
 Graph = dict[str, list[str]]
 
-g: Graph = {
-    'A': ['B', 'C', 'F'],
-    'B': ['A', 'D'],
-    'C': ['A', 'E', 'F'],
-    'D': ['B'],
-    'E': ['C', 'F'],
-    'F': ['A', 'C', 'E', 'G'],
-    'G': ['F']
-}
-
-test: Graph = {
-    'A': ['B'],
-    'B': ['A', 'D'],
-    'C': ['D', 'E'],
-    'D': ['C', 'E'],
-    'E': ['C', 'D']
-}
-
-test2: Graph = {
-    'A': ['D'],
-    'B': ['E'],
-    'C': ['E', 'I'],
-    'D': ['A', 'E', 'F'],
-    'E': ['B', 'C', 'D'],
-    'F': ['D', 'G'],
-    'G': ['F', 'H'],
-    'H': ['G', 'I'],
-    'I': ['C', 'H']
-}
-
-
-def depth_first_search(
-        start: str,
-        graph: Graph) -> Iterator[str]:
-    stack: deque[str] = deque()
-    reps: list[str] = []
-    visited: set[str] = set()
-    cycle: list[str] = []
-    stack.append(start)
-
-    while stack:
-        current: str = stack.pop()
-        if (current not in visited) and (current not in reps):
-            yield current
-            stack.extend(graph[current][::-1])
-            visited.add(current)
-            reps.append(current)
-            cycle.append(current)
-            if len(cycle) == 4:
-                cycle = cycle[1:]
-        elif (current in visited) and (current in reps) and (len(cycle) == 3) and (current == cycle[0]):
-            cycle.append(current)
-            return cycle
+"""
+Problem solved with help of:
+https://www.geeksforgeeks.org/detect-cycle-undirected-graph/
+"""
 
 
 def has_cycle(initial: str, graph: Graph) -> Optional[list[str]]:
-    ...
+
+    visited: set[str] = set()
+    stack: list[str] = []
+
+    def dfs(node, parent):
+        visited.add(node)
+        stack.append(node)
+
+        for neighbor in graph[node]:
+            if neighbor == parent:
+                continue
+            if neighbor not in visited:
+                result = dfs(neighbor, node)
+                if result:
+                    return result
+            if neighbor in stack:
+                first = [stack[stack.index(neighbor)]]
+                return stack[stack.index(neighbor):] + first
+        stack.pop()
+
+        return None
+
+    if initial not in visited:
+        cycle = dfs(initial, None)
+        if cycle:
+            return cycle
+    return None
+
+# def has_cycle(initial: str, graph: Graph) -> Optional[list[str]]:
+#     stack: deque[str] = deque()
+#     visited: set[str] = set()
+#     visited2: set[str] = set()
+#     stack.append(initial)
+#     while stack:
+#         current: str = stack.pop()
+#         if current not in visited:
+#             yield current
+#             stack.extend(graph[current][::-1])
+#             visited.add(current)
+#         elif (current in visited) and (current not in visited2):
+#             yield current
+#             elems = list(visited)
+#             elems.append(current)
+#             return elems
+#     return None
 
 
 if __name__ == '__main__':
-    # print(f'{list(depth_first_search("A", g))}')
-    print(f'{list(depth_first_search("A", test))}')
-    print(f'{list(depth_first_search("B", test2))}')
+    print(has_cycle('A', {
+        'A': ['B', 'C'],
+        'B': ['A', 'C'],
+        'C': ['A', 'B']
+    }))
+
+    print(has_cycle(
+        'C', {
+            'A': ['B'],
+            'B': ['A', 'C'],
+            'C': ['B', 'D'],
+            'D': ['C'],
+        })
+    )
+
+    print(has_cycle('A', {
+        'A': ['B', 'C'],
+        'B': ['A', 'C'],
+        'C': ['A', 'B']
+    }))
