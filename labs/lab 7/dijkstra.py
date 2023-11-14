@@ -11,13 +11,14 @@ import heapq
 
 WeightedGraph = dict[str, set[tuple[str, float]]]
 
+
 def dijkstra_spt(
         initial: str,
         graph: WeightedGraph) -> tuple[dict[str, float], WeightedGraph]:
     unvisited_nodes = list(graph.keys())
     shortest_distances: dict[str, float] = {initial: 0}
     previous_nodes: dict[str, str] = {}
-    max_value = float('inf') # Assign the infinity value to every distance until knowing the real distance
+    max_value = float('inf')  # Assign the infinity value to max_value
 
     for node in unvisited_nodes:
         if node != initial:
@@ -29,14 +30,16 @@ def dijkstra_spt(
             if node in shortest_distances:
                 if current_min_node is None:
                     current_min_node = node
-                elif shortest_distances[node] < shortest_distances[current_min_node]:
+                elif (shortest_distances[node]
+                      < shortest_distances[current_min_node]):
                     current_min_node = node
 
         # Get the neighbors of the current node
         neighbors = graph[current_min_node]
         for neighbor in neighbors:
             distance = shortest_distances[current_min_node] + neighbor[1]
-            if neighbor[0] not in shortest_distances or distance < shortest_distances[neighbor[0]]:
+            if (neighbor[0] not in shortest_distances or
+                    distance < shortest_distances[neighbor[0]]):
                 shortest_distances[neighbor[0]] = distance
                 previous_nodes[neighbor[0]] = current_min_node
         unvisited_nodes.remove(current_min_node)
